@@ -57,7 +57,7 @@ function createCard(levelCardURL,levelCss){
     levelContainer = document.createElement("div");
     levelContainer.classList.add("levelContainer");
     gameContainer.appendChild(levelContainer);
-    for(let i = 0; i<levelCardURL.length; i++){
+    for(let i = 0; i < levelCardURL.length; i++){
         const singleCard = document.createElement("div");
         singleCard.classList.add("single-card-container");
         singleCard.classList.add(levelCss);
@@ -86,7 +86,7 @@ function alertWin(){
         alert("You win! The final score is "+ finalScore +" !");
         initial();
     } else {
-//level 1 or  level 2 win
+//level 1 or level 2 win
         alert("You win!");
         clearInterval(id);
         gameContainer.removeChild(levelContainer);
