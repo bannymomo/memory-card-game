@@ -23,7 +23,7 @@ let levelString;
 
 const cardPool = ["Iron-man", "Thor", "Natasha", "Hawkeye", "Spider-man", "Captain", "wizart"];
 
-const generateCards = function(pairNumber){
+function generateCards(pairNumber){
     const cards = [];
     const cardPoolLength = cardPool.length;
 
@@ -41,7 +41,7 @@ const generateCards = function(pairNumber){
     return cards;
 };
 
-const shuffleCards = function(cards){
+function shuffleCards(cards){
     return cards.sort(() => Math.random() - 0.5);
 };
 
@@ -156,7 +156,6 @@ function game(level){
     const cards = document.getElementsByClassName(level);
     cardNumber = cards.length;
     counting = 0;
-
 
 //cards add listener;
     addListener(cards, flipCard);
