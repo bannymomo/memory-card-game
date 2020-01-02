@@ -9,21 +9,43 @@ const score = document.getElementById("score");
 //card pattern
 const cardPool = ["Iron-man", "Thor", "Natasha", "Hawkeye", "Spider-man", "Captain", "wizart"];
 
-//basic setup
-let flipped = false;
-let firstCard = null;
-let secondCard = null;
-let waitingForFlip = false;
-let counting = 0;
-let finalScore = 0;
+//global variable
+let flipped;
+let firstCard;
+let secondCard;
+let waitingForFlip;
+let counting;
+let finalScore;
 let levelNumber;
-let scoreincrease;
 let secondInnerHtml;
 let id;
 let cardNumber;
 let levelContainer;
-let pairNumber;
-score.innerHTML = finalScore;
+
+function gameStartInitial(){
+    gameContainer.style.display = "block";
+    levelNumber = 1;
+    currentLevel.innerHTML = levelNumber;
+    startBtn.style.display = "none";
+    finishBtn.style.display = "block";
+    waitingForFlip = false;
+    flipped = false;
+    firstCard = null;
+    secondCard = null;
+    second.innerHTML = 60; 
+    finalScore = 0;
+    score.innerHTML = finalScore;
+    counting = 0;
+    if(gameContainer.contains(levelContainer)){
+        gameContainer.removeChild(levelContainer)
+    }
+}
+
+startBtn.onclick = function(){
+    gameStartInitial();
+    initUI(levelNumber);
+    game();
+};
 
 function pickCardsPattern(pairNumber){
     const cards = [];
@@ -43,20 +65,20 @@ function pickCardsPattern(pairNumber){
     return cards;
 };
 
-function createCard(cardsPattern){
+function createCard(shuffledcardsPattern){
     levelContainer = document.createElement("div");
     levelContainer.classList.add("levelContainer");
     levelContainer.style['grid-template-columns'] = `repeat(${levelNumber * 2}, 1fr)`;
     gameContainer.appendChild(levelContainer);
-    for(let i = 0; i < cardsPattern.length; i++){
+    for(let i = 0; i < shuffledcardsPattern.length; i++){
         const singleCard = document.createElement("div");
         singleCard.classList.add("single-card-container");
-        singleCard.dataset.framework = cardsPattern[i];
+        singleCard.dataset.framework = shuffledcardsPattern[i];
         levelContainer.appendChild(singleCard);
         const frontFace = document.createElement("img");
         singleCard.appendChild(frontFace);
         frontFace.classList.add("front-face");
-        frontFace.src = "./img/"+cardsPattern[i]+".jpg";
+        frontFace.src = "./img/"+shuffledcardsPattern[i]+".jpg";
         const backFace = document.createElement("img");
         singleCard.appendChild(backFace);
         backFace.classList.add("back-face");
@@ -125,7 +147,7 @@ function flipCard(event){
         secondCard.removeEventListener("click",flipCard);
         counting++;
         secondInnerHtml = second.innerHTML;
-        scoreincrease = levelNumber * levelNumber * secondInnerHtml;
+        const scoreincrease = levelNumber * levelNumber * secondInnerHtml;
         finalScore += scoreincrease;
         score.innerHTML = finalScore;
         judge();
@@ -181,11 +203,6 @@ function alertLose(){
     } 
 }
 
-finishBtn.onclick = function(){
-    gameOverInitial();
-    alert("Game over! Your score is " + finalScore + "!");
-}
-
 function gameOverInitial(){
     clearInterval(id);
     waitingForFlip = true;
@@ -194,20 +211,7 @@ function gameOverInitial(){
     flipped = false;
 }
 
-startBtn.onclick = function(){
-    gameContainer.style.display = "block";
-    levelNumber = 1;
-    currentLevel.innerHTML = levelNumber;
-    startBtn.style.display = "none";
-    finishBtn.style.display = "block";
-    waitingForFlip = false;
-    flipped = false;
-    second.innerHTML = 60; 
-    finalScore = 0;
-    score.innerHTML = finalScore;
-    if(gameContainer.contains(levelContainer)){
-        gameContainer.removeChild(levelContainer)
-    }
-    initUI(levelNumber);
-    game();
-};
+finishBtn.onclick = function(){
+    gameOverInitial();
+    alert("Game over! Your score is " + finalScore + "!");
+}
