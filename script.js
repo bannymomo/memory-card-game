@@ -117,7 +117,6 @@ button.onclick = function() {
     initUI(levelNumber);
     game();
   } else {
-    button.innerHTML = "Start";
     gameOverInitial();
     alert("Game over! Your score is " + finalScore + "!");
   }
@@ -232,4 +231,5 @@ function gameOverInitial() {
   clearInterval(id);
   waitingForFlip = true;
   flipped = false;
+  button.innerHTML = "Start";
 }
