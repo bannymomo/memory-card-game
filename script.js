@@ -162,12 +162,16 @@ function alertWin(){
         alert("You win!");
         clearInterval(id);
         gameContainer.removeChild(levelContainer);
-        levelNumber += 1;
-        currentLevel.innerHTML = levelNumber;
-        second.innerHTML = 60; 
-        initUI(levelNumber);
-        game();
+        nextLevel();
     }
+}
+
+function nextLevel(){
+    levelNumber += 1;
+    currentLevel.innerHTML = levelNumber;
+    second.innerHTML = 60; 
+    initUI(levelNumber);
+    game();
 }
 
 function alertLose(){
