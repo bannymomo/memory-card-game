@@ -66,11 +66,11 @@ function createCard(levelCardURL,levelCss){
         const frontFace = document.createElement("img");
         singleCard.appendChild(frontFace);
         frontFace.classList.add("front-face");
-        frontFace.src = "/img/"+levelCardURL[i]+".jpg";
+        frontFace.src = "./img/"+levelCardURL[i]+".jpg";
         const backFace = document.createElement("img");
         singleCard.appendChild(backFace);
         backFace.classList.add("back-face");
-        backFace.src = "/img/Avenger-Logo.jpg";
+        backFace.src = "./img/Avenger-Logo.jpg";
     }
 }
 
