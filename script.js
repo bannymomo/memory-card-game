@@ -1,5 +1,5 @@
 //get elements
-const botton = document.getElementById("botton");
+const button = document.getElementById("button");
 const gameContainer = document.getElementById("gameContainer");
 const currentLevel = document.getElementById("level");
 const second = document.getElementById("timer");
@@ -29,6 +29,7 @@ let id;
 let cardNumber;
 let levelContainer;
 
+//basic setting at very beginning
 function gameStartInitial() {
   gameContainer.style.display = "block";
   levelNumber = 1;
@@ -46,18 +47,9 @@ function gameStartInitial() {
   }
 }
 
-botton.onclick = function() {
-  if (botton.innerHTML === "Start") {
-    botton.innerHTML = "Finish";
-    gameStartInitial();
-    initUI(levelNumber);
-    game();
-  } else {
-    botton.innerHTML = "Start";
-    gameOverInitial();
-    alert("Game over! Your score is " + finalScore + "!");
-  }
-};
+/*******************************************
+/     UI Update
+/******************************************/
 
 function pickCardsPattern(pairNumber) {
   const cards = [];
@@ -110,6 +102,31 @@ function initUI(levelNumber) {
   createCard(shuffledCards);
 }
 
+function countdown() {
+  second.innerHTML = second.innerHTML - 1;
+  alertLose();
+}
+
+/*******************************************
+/     button  binding
+/******************************************/
+button.onclick = function() {
+  if (button.innerHTML === "Start") {
+    button.innerHTML = "Finish";
+    gameStartInitial();
+    initUI(levelNumber);
+    game();
+  } else {
+    button.innerHTML = "Start";
+    gameOverInitial();
+    alert("Game over! Your score is " + finalScore + "!");
+  }
+};
+
+/*******************************************
+/     game progress
+/******************************************/
+
 function game() {
   const cards = document.getElementsByClassName("single-card-container");
   cardNumber = cards.length;
@@ -120,11 +137,6 @@ function game() {
 
   //timer 60s countdown
   id = setInterval(countdown, 1000);
-}
-
-function countdown() {
-  second.innerHTML = second.innerHTML - 1;
-  alertLose();
 }
 
 function addListener(cards) {
