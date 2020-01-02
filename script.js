@@ -102,11 +102,6 @@ function initUI(levelNumber) {
   createCard(shuffledCards);
 }
 
-function countdown() {
-  second.innerHTML = second.innerHTML - 1;
-  alertLose();
-}
-
 /*******************************************
 /     button  binding
 /******************************************/
@@ -142,6 +137,11 @@ function addListener(cards) {
   for (let i = 0; i < cards.length; i++) {
     cards[i].addEventListener("click", flipCard);
   }
+}
+
+function countdown() {
+  second.innerHTML = second.innerHTML - 1;
+  alertLose();
 }
 
 function flipCard(event) {
