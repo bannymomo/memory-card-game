@@ -28,6 +28,7 @@ let secondInnerHtml;
 let id;
 let cardNumber;
 let levelContainer;
+let gameOver;
 
 //basic setting at very beginning
 function gameStartInitial() {
@@ -42,6 +43,7 @@ function gameStartInitial() {
   finalScore = 0;
   score.innerHTML = finalScore;
   counting = 0;
+  gameOver = false;
   if (gameContainer.contains(levelContainer)) {
     gameContainer.removeChild(levelContainer);
   }
@@ -146,7 +148,7 @@ function countdown() {
 
 function flipCard(event) {
   //if two cards not match, player can't flip the third card before these two cards flip back
-  if (waitingForFlip) {
+  if (waitingForFlip || gameOver) {
     return;
   }
 
@@ -230,6 +232,7 @@ function alertLose() {
 function gameOverInitial() {
   clearInterval(id);
   waitingForFlip = true;
+  gameOver = true;
   flipped = false;
   button.innerHTML = "Start";
 }
