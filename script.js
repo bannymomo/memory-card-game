@@ -16,36 +16,37 @@ const cardPool = [
   "wizart"
 ];
 
-//global variable
-let flipped;
-let firstCard;
-let secondCard;
-let waitingForFlip;
-let counting;
-let finalScore;
-let levelNumber;
-let secondInnerHtml;
-let id;
-let cardNumber;
-let levelContainer;
-let gameOver;
+const game = {
+  flipped: null,
+  firstCard: null,
+  secondCard: null,
+  waitingForFlip: null,
+  counting: null,
+  finalScore: null,
+  levelNumber: null,
+  secondInnerHtml: null,
+  id: null,
+  cardNumber: null,
+  levelContainer: null,
+  gameOver: null
+};
 
 //basic setting at very beginning
 function gameStartInitial() {
   gameContainer.style.display = "block";
-  levelNumber = 1;
-  currentLevel.innerHTML = levelNumber;
-  waitingForFlip = false;
-  flipped = false;
-  firstCard = null;
-  secondCard = null;
+  game.levelNumber = 1;
+  currentLevel.innerHTML = game.levelNumber;
+  game.waitingForFlip = false;
+  game.flipped = false;
+  game.firstCard = null;
+  game.secondCard = null;
   second.innerHTML = 60;
-  finalScore = 0;
-  score.innerHTML = finalScore;
-  counting = 0;
-  gameOver = false;
-  if (gameContainer.contains(levelContainer)) {
-    gameContainer.removeChild(levelContainer);
+  game.finalScore = 0;
+  score.innerHTML = game.finalScore;
+  game.counting = 0;
+  game.gameOver = false;
+  if (gameContainer.contains(game.levelContainer)) {
+    gameContainer.removeChild(game.levelContainer);
   }
 }
 
@@ -72,16 +73,17 @@ function pickCardsPattern(pairNumber) {
 }
 
 function createCard(shuffledcardsPattern) {
-  levelContainer = document.createElement("div");
-  levelContainer.classList.add("levelContainer");
-  levelContainer.style["grid-template-columns"] = `repeat(${levelNumber *
-    2}, 1fr)`;
-  gameContainer.appendChild(levelContainer);
+  game.levelContainer = document.createElement("div");
+  game.levelContainer.classList.add("levelContainer");
+  game.levelContainer.style[
+    "grid-template-columns"
+  ] = `repeat(${game.levelNumber * 2}, 1fr)`;
+  gameContainer.appendChild(game.levelContainer);
   for (let i = 0; i < shuffledcardsPattern.length; i++) {
     const singleCard = document.createElement("div");
     singleCard.classList.add("single-card-container");
     singleCard.dataset.framework = shuffledcardsPattern[i];
-    levelContainer.appendChild(singleCard);
+    game.levelContainer.appendChild(singleCard);
     const frontFace = document.createElement("img");
     singleCard.appendChild(frontFace);
     frontFace.classList.add("front-face");
@@ -111,11 +113,11 @@ button.onclick = function() {
   if (button.innerHTML === "Start") {
     button.innerHTML = "Finish";
     gameStartInitial();
-    initUI(levelNumber);
-    game();
+    initUI(game.levelNumber);
+    gameSet();
   } else {
     gameOverInitial();
-    alert("Game over! Your score is " + finalScore + "!");
+    alert("Game over! Your score is " + game.finalScore + "!");
   }
 };
 
@@ -123,16 +125,16 @@ button.onclick = function() {
 /     game progress
 /******************************************/
 
-function game() {
+function gameSet() {
   const cards = document.getElementsByClassName("single-card-container");
-  cardNumber = cards.length;
-  counting = 0;
+  game.cardNumber = cards.length;
+  game.counting = 0;
 
   //cards add listener;
   addListener(cards, flipCard);
 
   //timer 60s countdown
-  id = setInterval(countdown, 1000);
+  game.id = setInterval(countdown, 1000);
 }
 
 function addListener(cards) {
@@ -148,42 +150,45 @@ function countdown() {
 
 function flipCard(event) {
   //if two cards not match, player can't flip the third card before these two cards flip back
-  if (waitingForFlip || gameOver) {
+  if (game.waitingForFlip || game.gameOver) {
     return;
   }
 
   event.currentTarget.classList.add("flip");
 
   //choose first card and second card
-  if (!flipped) {
-    flipped = true;
-    firstCard = event.currentTarget;
+  if (!game.flipped) {
+    game.flipped = true;
+    game.firstCard = event.currentTarget;
   } else {
-    flipped = false;
-    secondCard = event.currentTarget;
+    game.flipped = false;
+    game.secondCard = event.currentTarget;
 
     // select same card
-    if (firstCard === secondCard) {
-      firstCard.classList.remove("flip");
+    if (game.firstCard === game.secondCard) {
+      game.firstCard.classList.remove("flip");
       return;
     }
     // two cards matching
-    if (firstCard.dataset.framework === secondCard.dataset.framework) {
-      firstCard.removeEventListener("click", flipCard);
-      secondCard.removeEventListener("click", flipCard);
-      counting++;
-      secondInnerHtml = second.innerHTML;
-      const scoreincrease = levelNumber * levelNumber * secondInnerHtml;
-      finalScore += scoreincrease;
-      score.innerHTML = finalScore;
+    if (
+      game.firstCard.dataset.framework === game.secondCard.dataset.framework
+    ) {
+      game.firstCard.removeEventListener("click", flipCard);
+      game.secondCard.removeEventListener("click", flipCard);
+      game.counting++;
+      game.secondInnerHtml = second.innerHTML;
+      const scoreincrease =
+        game.levelNumber * game.levelNumber * game.secondInnerHtml;
+      game.finalScore += scoreincrease;
+      score.innerHTML = game.finalScore;
       judge();
     } else {
       // two cards different
-      waitingForFlip = true;
+      game.waitingForFlip = true;
       setTimeout(() => {
-        firstCard.classList.remove("flip");
-        secondCard.classList.remove("flip");
-        waitingForFlip = false;
+        game.firstCard.classList.remove("flip");
+        game.secondCard.classList.remove("flip");
+        game.waitingForFlip = false;
       }, 1000);
       return;
     }
@@ -193,7 +198,7 @@ function flipCard(event) {
 function judge() {
   // final judge
   // win
-  if (secondInnerHtml > 0 && counting === cardNumber / 2) {
+  if (game.secondInnerHtml > 0 && game.counting === game.cardNumber / 2) {
     setTimeout(() => {
       alertWin();
     }, 500);
@@ -202,37 +207,37 @@ function judge() {
 
 function alertWin() {
   //final level 3 win
-  if (levelNumber === 3) {
-    alert("You win! The final score is " + finalScore + " !");
+  if (game.levelNumber === 3) {
+    alert("You win! The final score is " + game.finalScore + " !");
     gameOverInitial();
   } else {
     //level 1 or level 2 win
     alert("You win!");
-    clearInterval(id);
-    gameContainer.removeChild(levelContainer);
+    clearInterval(game.id);
+    gameContainer.removeChild(game.levelContainer);
     nextLevel();
   }
 }
 
 function nextLevel() {
-  levelNumber += 1;
-  currentLevel.innerHTML = levelNumber;
+  game.levelNumber += 1;
+  currentLevel.innerHTML = game.levelNumber;
   second.innerHTML = 60;
-  initUI(levelNumber);
-  game();
+  initUI(game.levelNumber);
+  gameSet();
 }
 
 function alertLose() {
   if (second.innerHTML <= 0) {
-    alert("Ops! Game over... Your score is " + finalScore + "...");
+    alert("Ops! Game over... Your score is " + game.finalScore + "...");
     gameOverInitial();
   }
 }
 
 function gameOverInitial() {
-  clearInterval(id);
-  waitingForFlip = true;
-  gameOver = true;
-  flipped = false;
+  clearInterval(game.id);
+  game.waitingForFlip = true;
+  game.gameOver = true;
+  game.flipped = false;
   button.innerHTML = "Start";
 }
