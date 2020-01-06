@@ -59,12 +59,7 @@ function pickCardsPattern(pairNumber) {
   const cardPoolLength = cardPool.length;
 
   for (let i = 0; i < pairNumber; i++) {
-    let index;
-    if (i > cardPoolLength - 1) {
-      index = i % cardPoolLength;
-    } else {
-      index = i;
-    }
+    let index = i % cardPoolLength;
     const card = cardPool[index];
     cards.push(card);
     cards.push(card);
